@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+	<meta author="Naseem Amjad">
+    <title>Urdu Keyboard</title>
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+	<script src="assets/js/urdunize.js"></script>
+	<style>	
+	.ur {
+		font-family: 'Jameel Noori Nastaleeq', 'Nafees', 'Noto Naskh Urdu', 'Noto Naskh Arabic', 'Arial';
+		direction: rtl;
+		max-width: 100%;
+		padding: 4px;		
+		background-color: #DCFFDC;
+	}	
+
+	.textarea {
+		height: 4em;
+    	width: 480px;
+		max-width: 96%;
+		padding: 5px;
+		line-height: 1.5em;
+	}
+
+	.urdu_keyboard_image {
+		height: auto;
+		width:480px;		
+		max-width: 96%;
+	}
+	</style>
+	<link rel="stylesheet" type="text/css" href="assets/dist/github.min.css">
+	<link rel="stylesheet" type="text/css" href="assets/dist/jquery.fontpicker.css">	
+  </head>
+  <body>
+	<form>
+		<div class="form-group">
+			<label for="kbd">Choose Keyboard:</label>
+			<select id="keyboard_type" class="form-control" onchange="changeKeyboard(this.value);">
+				<option value="sys">System</option>
+				<option value="urd">Urdu</option>				
+			</select>                                             
+		</div>
+		<input id="font1" type="text">
+		<p class="ur">انگریزی کی بورڈ سے اردو لکھیں: اپنی ویب سائٹ پر استعمال کرنے کے لیے jQueryکا پلگ اِن <a href="https://www.ajsoftpk.com/naseem_amjad/urdu/" target="_blank">یہاں سے حاصل کریں</a></p>
+		<p> Sample Urdu Text having all letters (Haroof) </p>
+		<p>ایک ٹیلے پر واقع مزارخواجہ فریدالدین گنج شکرؒ کے احاطہء صحن میں ذرا سی ژالہ باری چاندی کے ڈھیروں کی مثل بڑے غضب کا نظارہ دیتی ہے۔ </p>
+		<textarea id='u' class="ur textarea" placeholder="یہاں لکھیں">			
+</textarea>
+<textarea id='e' class="textarea" placeholder="Type here.">			
+</textarea>
+		<p><img class="urdu_keyboard_image" id="kbd_u" title="Urdu Phonetic Keyboard Layout (Unclickable)" alt="Image of Urdu Phonetic Keyboard to be used by Urdunize component" src="urdu_phonetic_keyboard.png"/></p>
+	</form>
+<BR>
+	Now you can write Urdu Online using JavaScript (JQuery) based Urdu Text Box , the source code is Mobile Friendly and components are Responsive.<BR>
+	Presented by Naseem Amjad (urdujini@gmail.com)
+
+	<script src="assets/dist/jquery.fontpicker.js"></script>
+	<script>
+
+	function applyFont(element, fontSpec) {
+		if (!fontSpec) {
+			// Font was cleared
+			console.log('You cleared font');
+
+			$(element).css({
+				fontFamily: 'inherit',
+				fontWeight: 'normal',
+				fontStyle: 'normal'
+			});
+			return;
+		}
+		console.log('You selected font: ' + fontSpec);
+
+// Split font into family and weight/style
+var tmp = fontSpec.split(':'),
+	family = tmp[0],
+	variant = tmp[1] || '400',
+	weight = parseInt(variant,10),
+	italic = /i$/.test(variant);
+
+// Apply selected font to element
+$(element).css({
+	fontFamily: "'" + family + "'",
+	fontWeight: weight,
+	fontStyle: italic ? 'italic' : 'normal'
+});
+}
+	$('#font1')
+	.fontpicker()
+	.on('change', function() {
+	   applyFont('#u', this.value);
+	});
+	</script>
+
+	<script>
+		function myinitialize(){
+			var $hiddenInput = $('<input/>',{type:'hidden',id:"naseem_amjad_keyboard_language",value:$("#keyboard_type").val()});
+			$hiddenInput.appendTo('body');
+
+			$("#u").val("");
+			$("#e").val("");
+			connectKeyboard("#u");
+			hideKeyboard("#u","rtl");
+			//hideKeyboard("#e","ltr");
+		}
+
+		function changeKeyboard(_name){
+			if (_name=="urd" || _name=="arb"){
+				showKeyboard("#u","rtl");
+				hideKeyboard("#e","ltr");
+				$("#naseem_amjad_keyboard_language").val("ur");
+			}
+			else
+			{				
+				hideKeyboard("#u","rtl");
+				showKeyboard("#e","ltr");
+				$("#naseem_amjad_keyboard_language").val("en");
+			}
+		}		
+
+		myinitialize();
+	</script>
+  </body>
+</html>
